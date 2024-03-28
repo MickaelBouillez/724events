@@ -7,32 +7,25 @@ import ModalEvent from "../ModalEvent";
 
 import "./style.css";
 
-const PER_PAGE = 9; // nbr de réalisation sur la page
+const PER_PAGE = 9;
 
 const EventList = () => {
   const { data, error } = useData();
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const filteredEvents =
-    // Ajout d'un filtre dans le second data?.events qui est utilisé quand on a un type
-    (
-      (!type
-        ? data?.events
-        : data?.events.filter((event) => event.type === type)) || []
-    ).filter(
-      // event n'est pas utilisé
-      (event, index) => {
-        if (
-          // Gère nombre d'élément sur la pages ? Pas de filtre sur les labels ?
-          (currentPage - 1) * PER_PAGE <= index &&
-          PER_PAGE * currentPage > index
-        ) {
-          return true;
-        }
-
-        return false;
-      }
-    );
+  const filteredEvents = (
+    (!type
+      ? data?.events
+      : data?.events.filter((elem) => elem.type === type)) || [] /**/ 
+  ).filter((event, index) => {
+    if (
+      (currentPage - 1) * PER_PAGE <= index &&
+      PER_PAGE * currentPage > index
+    ) {
+      return true;
+    }
+    return false;
+  });
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);

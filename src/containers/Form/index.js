@@ -6,7 +6,7 @@ import Button, { BUTTON_TYPES } from "../../components/Button";
 
 const mockContactApi = () =>
   new Promise((resolve) => {
-    setTimeout(resolve, 1000);
+    setTimeout(resolve, 900); // reduction du temps
   });
 
 const Form = ({ onSuccess, onError }) => {
@@ -19,6 +19,7 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();
         setSending(false);
+        onSuccess();
       } catch (err) {
         setSending(false);
         onError(err);
@@ -26,21 +27,24 @@ const Form = ({ onSuccess, onError }) => {
     },
     [onSuccess, onError]
   );
-  return (
+  return (// formulaire de contact
     <form onSubmit={sendContact}>
       <div className="row">
         <div className="col">
           <Field placeholder="" label="Nom" />
           <Field placeholder="" label="Prénom" />
           <Select
-            selection={["Personel", "Entreprise"]}
+            selection={["Personnel", "Entreprise"]}
             onChange={() => null}
-            label="Personel / Entreprise"
+            label="Personnel / Entreprise"
             type="large"
             titleEmpty
           />
-          <Field placeholder="" label="Email" />
-          <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
+          <Field placeholder="" label="Email" type={FIELD_TYPES.INPUT_EMAIL} />
+          <Button
+            type={BUTTON_TYPES.SUBMIT}
+            disabled={sending}
+          >
             {sending ? "En cours" : "Envoyer"}
           </Button>
         </div>
